@@ -287,17 +287,19 @@
 				// Keep looping 
 				checking += 1;
 
-				// Loop back around once the end is reached
-				if (checking >= phraseData.length){
-					checking = 0;
-				}
-
 				// Don't use the same phrase twice
 				if (checking == fromLeft){
 					checking += 1
 				}
 
+				// Loop back around once the end is reached
+				if (checking >= phraseData.length){
+					checking = 0;
+				}
+
 			}
+
+			console.log(fromLeft, fromRight);
 
 			// Temporarily make sure everything is the right case for matching
 			customPhrase = customPhrase.charAt(0).toLowerCase() + customPhrase.slice(1);
