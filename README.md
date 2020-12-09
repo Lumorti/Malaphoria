@@ -4,8 +4,11 @@ A web-based generator of malaphors, which are (usually) nonsensical combinations
 
 An example which I've heard used as a genuine expression:
 
-"Does the Pope shit in the woods?"
+> "Does the Pope shit in the woods?"
 
-which combines "Does a bear shit in the woods?" and "Is the Pope Catholic?".
+combining: 
+
+> "Does a bear shit in the woods?" 
+> "Is the Pope Catholic?".
 
 The page is hosted [here](https://lumorti.github.io/Malaphoria/).
