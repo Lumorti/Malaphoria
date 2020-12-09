@@ -283,14 +283,14 @@
 				// Keep looping 
 				checking += 1;
 
-				// Don't use the same phrase twice
-				if (checking == fromLeft){
-					checking += 1
-				}
-
 				// Loop back around once the end is reached
 				if (checking >= phraseData.length){
 					checking = 0;
+				}
+
+				// Don't use the same phrase twice
+				if (checking == fromLeft){
+					checking += 1
 				}
 
 			}
