@@ -1,0 +1,332 @@
+ <!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<style>
+
+		body {
+			text-align: center;
+			margin: 0;
+			padding: 0;
+			font-size: 1.2em;
+			background-color: #45677a;
+			color: white;
+			font-family: Arial, sans-serif;
+		}
+
+		#top {
+			text-align: center;
+			height: auto;
+			width: 100%;
+		}
+
+		#middle{
+			display: none;
+		}
+
+		#centerWrapper{
+			text-align: center;
+			display: inline-block;
+			width: 70%;
+			max-width: 700px;
+		}
+
+		#bottom {
+			text-align: center;
+			height: 50vh;
+			width: 100%;
+			display: none;
+		}
+
+		#generate {
+			margin-top: 20px;
+			margin-bottom: 20px;
+			padding: 10px;
+			font-size: 1.0em;
+			border-radius: 10px;
+		}
+
+		#generate:hover{
+			background: white;
+
+		}
+
+		#malaphor {
+			margin-top: 3em;
+			margin-bottom: 3em;
+			padding: 2%;
+			color: white;
+			border-radius: 10px;
+			font-size: 1.5em;
+			cursor: pointer;
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+
+		#originalLeft {
+			text-align: center;
+			width: 40%;
+			margin-top: 3%;
+			margin-left: 3%;
+			margin-right: 3%;
+			float: left;
+			padding: 2%;
+			background: #a9c6d6;
+			color: black;
+			border-radius: 10px;
+		}
+
+		#originalRight {
+			text-align: center;
+			width: 40%;
+			margin-top: 3%;
+			margin-left: 3%;
+			margin-right: 3%;
+			float: left;
+			padding: 2%;
+			background: #a9c6d6;
+			color: black;
+			border-radius: 10px;
+		}
+
+	</style>
+	<script>
+		var phraseData = [
+			{"words":     "Is the Pope Catholic?",
+			 "meaning":   "I should hope so",
+			 "toMove":    [["the Pope", "snwa"], ["Pope", "sn"]],
+			 "toReplace": [["the Pope", "snwa"], ["Pope", "sn"], ["Catholic", "a"]]},
+
+			{"words":     "Does a bear shit in the woods?",
+			 "meaning":   "I should hope so",
+			 "toMove":    [["a bear", "snwa"], ["shit", "v"]],
+			 "toReplace": [["a bear", "snwa"], ["the woods", "pnwa"]]},
+
+			{"words":     "There are plenty more fish in the sea",
+			 "meaning":   "You should install Tinder",
+			 "toMove":    [["the fish in the sea", "pnwa"], ["fish", "pn"]],
+			 "toReplace": [["fish", "pn"], ["the sea", "pnwa"], ["sea", "pn"]]},
+
+			{"words":     "Don't beat about the bush",
+			 "meaning":   "We don't have all day, Susan",
+			 "toMove":    [["the bush", "snwa"], ["beat", "v"], ["beat", "ptv"]],
+			 "toReplace": [["the bush", "snwa"], ["beat about", "v"]]},
+
+			{"words":     "Bob's your uncle",
+			 "meaning":   "As easy as Bob being your uncle, which, assuming you have an uncle called Bob, is very easy",
+			 "toMove":    [["your uncle", "snwa"]],
+			 "toReplace": [["your uncle", "snwa"]]},
+
+			{"words":     "We'll cross that bridge when we come to it",
+			 "meaning":   "That's a job for future-us",
+			 "toMove":    [["that bridge", "snwa"]],
+			 "toReplace": [["cross", "v"], ["bridge", "sn"], ["that bridge", "snwa"]]},
+
+			{"words":     "Don't burn your bridges",
+			 "meaning":   "People won't let you return if you damage their infrastructure",
+			 "toMove":    [["burn", "v"], ["bridges", "pn"], ["burned", "ptv"], ["your bridges", "pnwa"]],
+			 "toReplace": [["burn", "v"], ["your bridges", "pnwa"], ["your bridges", "snwa"]]},
+
+			{"words":     "Don't look a gift horse in the mouth",
+			 "meaning":   "In the olden days, horse teeth were a valued commodity, used in jewelry, medicine and cake decoration",
+			 "toMove":    [["a gift horse", "snwa"], ["gift horse", "sn"]],
+			 "toReplace": [["a gift horse", "snwa"], ["look", "v"]]},
+
+			{"words":     "Curiosity killed the cat",
+			 "meaning":   "Curious cats are more likely to try dangerous hobbies, such as skydiving or recreational drugs",
+			 "toMove":    [["the cat", "snwa"], ["cat", "sn"], ["killed", "ptv"]],
+			 "toReplace": [["the cat", "snwa"], ["the cat", "pnwa"], ["killed", "ptv"], ["curiosity", "pnwa"], ["curiosity", "snwa"]]},
+
+			{"words":     "Between a rock and a hard place",
+			 "meaning":   "Absolutely fucked",
+			 "toMove":    [["a hard place", "snwa"]],
+			 "toReplace": [["a rock", "snwa"], ["a hard place", "snwa"]]},
+
+			{"words":     "Don't put all your eggs in one basket",
+			 "meaning":   "Farmers would originally use a different basket for every egg, and looked down on those who used larger baskets to carry multiple at once",
+			 "toMove":    [["all your eggs", "pnwa"], ["one basket", "snwa"], ["basket", "sn"], ["eggs","pn"], ["in one basket", "a"]],
+			 "toReplace": [["put", "v"], ["your eggs", "pnwa"], ["one basket", "snwa"]]},
+
+			{"words":     "A finger in every pie",
+			 "meaning":   "Influence regarding many things and a lack of hygiene",
+			 "toMove":    [["a finger", "snwa"], ["every pie", "snwa"], ["finger", "sn"], ["pie", "sn"]],
+			 "toReplace": [["a finger", "snwa"], ["finger", "sn"], ["pie", "sn"]]},
+
+			{"words":     "The grass is always greener",
+			 "meaning":   "Rich people have problems too, somehow",
+			 "toMove":    [["the grass", "snwa"], ["green", "a"]],
+			 "toReplace": [["the grass", "snwa"]]},
+
+			{"words":     "Hit the nail on the head",
+			 "meaning":   "Get something bang on",
+			 "toMove":    [],
+			 "toReplace": [["hit", "v"], ["the nail", "snwa"]]},
+
+			{"words":     "Kill two birds with one stone",
+			 "meaning":   "Accomplish two tasks with one solution, rendered obsolete with the invention of the fragmentation grenade which was then capable of killing three or even more birds with a single throw",
+			 "toMove":    [["two birds", "pnwa"], ["birds", "pn"], ["stone", "sn"], ["one stone", "snwa"]],
+			 "toReplace": [["birds", "pn"], ["stone", "sn"]]},
+
+			{"words":     "Let the cat out of the bag",
+			 "meaning":   "Reveal a secret cat from your bag as a ploy to distract a foe",
+			 "toMove":    [["the cat", "snwa"], ["cat", "sn"], ["the bag", "snwa"]],
+			 "toReplace": [["the cat", "snwa"], ["cat", "sn"], ["the bag", "snwa"]]},
+
+			{"words":     "Don't count your chickens before they hatch",
+			 "meaning":   "Chickens are too easy to count as eggs, wait until they can move for a real challenge",
+			 "toMove":    [["your chickens", "pnwa"], ["chicken", "sn"], ["chickens", "pn"], ["count", "v"], ["hatch", "v"]],
+			 "toReplace": [["your chickens", "pnwa"], ["count", "v"], ["hatch", "v"]]},
+
+			{"words":     "An apple a day keeps the doctor away",
+			 "meaning":   "Apples are good for you and will prevent death inevitably",
+			 "toMove":    [["an apple a day", "snwa"], ["doctor", "sn"], ["apple", "sn"]],
+			 "toReplace": [["an apple", "snwa"], ["the doctor", "snwa"]]},
+
+			{"words":     "You can lead a horse to water, but you can't make him drink",
+			 "meaning":   "When roleplaying as a horse, don't accept drinks from strangers",
+			 "toMove":    [["a horse", "snwa"], ["drink", "v"]],
+			 "toReplace": [["a horse", "snwa"], ["horse", "sn"], ["drink", "v"]]},
+
+			{"words":     "Don't beat a dead horse",
+			 "meaning":   "Just give it a rest already",
+			 "toMove":    [["a dead horse", "snwa"], ["beat", "v"]],
+			 "toReplace": [["a dead horse", "snwa"], ["beat", "v"]]}
+
+		]
+	</script>
+	<script>
+
+		// The latest generated phrase and the indices of its originals
+		var customPhrase = "";
+		var fromLeft = -1;
+		var fromRight = -1;
+
+		// The elements to update with the above info
+		var malaphorBox = undefined;
+		var leftOriginalBox = undefined;
+		var rightOriginalBox = undefined;
+		var bottomSection = undefined;
+		var middleSection = undefined;
+
+		// Called on body load
+		function init(){
+
+			// Save the DOM elements needed
+			malaphorBox = document.getElementById("malaphor");
+			leftOriginalBox = document.getElementById("originalLeft");
+			rightOriginalBox = document.getElementById("originalRight");
+			bottomSection = document.getElementById("bottom");
+			middleSection = document.getElementById("middle");
+
+		}
+
+		// Called on main button press, generates a new malaphor using the phrase list
+		function generateNew(){
+			
+			// Pick a saying
+			var fromLeft = Math.floor(Math.random()*phraseData.length);
+			var customPhrase = phraseData[fromLeft]["words"];
+
+			// Pick a section to replace
+			var toReplace = Math.floor(Math.random()*phraseData[fromLeft]["toReplace"].length);
+			var typeToFind = phraseData[fromLeft]["toReplace"][toReplace][1];
+
+			// Loop over the phrases
+			var fromRight = -1;
+			var toMove = -1;
+			var numSkips = Math.floor(Math.random()*10);
+			var checking = 0;
+			var limit = 0;
+			while (fromRight < 0 && limit < 100){
+
+				// To prevent it crashing just in case
+				limit += 1
+
+				// Check each of the portable sections
+				var foundSection = -1;
+				for (var i=0; i<phraseData[checking]["toMove"].length; i++){
+
+					// If it's valid
+					if (phraseData[checking]["toMove"][i][1] == typeToFind){
+
+						// Only stop after numSkips results have been passed over
+						if (numSkips == 0){
+							fromRight = checking;
+							toMove = i;
+						} else {
+							numSkips -= 1;
+						}
+						break;
+
+					}
+
+				}
+
+				// Keep looping 
+				checking += 1;
+
+				// Don't use the same phrase twice
+				if (checking == fromLeft){
+					checking += 1
+				}
+
+				// Loop back around once the end is reached
+				if (checking >= phraseData.length){
+					checking = 0;
+				}
+
+			}
+
+			// Temporarily make sure everything is the right case for matching
+			customPhrase = customPhrase.charAt(0).toLowerCase() + customPhrase.slice(1);
+
+			// If everything went well
+			if (limit < 100){
+
+				// Replace the phrase 
+				customPhrase = customPhrase.replace(phraseData[fromLeft]["toReplace"][toReplace][0], phraseData[fromRight]["toMove"][toMove][0]);
+
+			// If it didn't
+			} else {
+				customPhrase = "error: couldn't find any " + typeToFind;
+			}
+
+			// Make sure the first letter is capitalised
+			customPhrase = customPhrase.charAt(0).toUpperCase() + customPhrase.slice(1);
+
+			// Update the UI elements
+			bottomSection.style.display = "block";
+			middleSection.style.display = "block";
+			malaphorBox.innerHTML = customPhrase;
+			leftOriginalBox.innerHTML = phraseData[fromLeft]["words"];
+			rightOriginalBox.innerHTML = phraseData[fromRight]["words"];
+			
+			// Removed because seeing the same jokes gets repetitive
+			//leftOriginalBox.innerHTML += "<br><br>Meaning:<br><br>";
+			//leftOriginalBox.innerHTML += phraseData[fromLeft]["meaning"];
+			//rightOriginalBox.innerHTML += "<br><br>Meaning:<br><br>";
+			//rightOriginalBox.innerHTML += phraseData[fromRight]["meaning"];
+
+		}
+
+	</script>
+</head>
+<body onload="init()">
+	<div id="centerWrapper">
+		<p>MALAPHORIA: a generator of malaphors by <a href="https://github.com/Lumorti">Lumorti<a/></p>
+		<div id="top">
+			<!--<button id="generate" onclick="generateNew()">Generate a New Malaphor</button>-->
+			<div id="malaphor" onclick="generateNew()">Click here to generate a malaphor</div>
+		</div>
+		<p id="middle">from the phrases:</p>
+		<div id="bottom">
+			<div id="originalLeft"></div>
+			<div id="originalRight"></div>
+		</div>
+	</div>
+</body>
+</html>
